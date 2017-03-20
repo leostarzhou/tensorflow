@@ -33,20 +33,29 @@ sess.run(init)
 #summary_writer = tf.train.SummaryWriter('~/log', sess.graph)
 #total_step = 0
 
-merged = tf.summary.merge_all()
-writer = tf.summary.FileWriter('/home/leostarzhou/tensorflow/log', sess.graph)
 total_step = 0
+writer = tf.summary.FileWriter('/home/leostarzhou/tensorflow/log', sess.graph)
+merged = tf.summary.merge_all()
 
+#with tf.name_scope('sis'):
+#    tf.summary.scalar('step', step)
  # 拟合平面
 for step in xrange(0, 201):
-    summary = sess.run(train)
+    sess.run(train)
+    with tf.name_scope('sis'):
+        value = step * 0.1
+        tf.summary.scalar('step', value)
+    #summary = sess.run(merged)
+    #writer.add_summary(summary)
     #print sess.run(loss), sess.run(loss1)
-    writer.add_summary(summary, step)
     #total_step += 1
     #summary_str = sess.run(merged_summary_op)
-    #summary_writer.add_summary(summary_str, total_step)
     #if step % 20 == 0:
         #print step, sess.run(W), sess.run(b)
-
+out = 10
+with tf.name_scope('che'):
+    tf.summary.scalar('xin',100)
+summary = sess.run(merged)
+writer.add_summary(summary)
 writer.close()
 # 得到最佳拟合结果 W: [[0.100  0.200]], b: [0.300]
